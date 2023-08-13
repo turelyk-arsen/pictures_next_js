@@ -27,7 +27,11 @@ const awsmobile = {
         "EMAIL"
     ],
     "aws_user_files_s3_bucket": "picturesnextjsc8e44c475d2040f18e284907ea45b349143927-dev",
-    "aws_user_files_s3_bucket_region": "eu-north-1"
+    "aws_user_files_s3_bucket_region": "eu-north-1",
+    "aws_appsync_graphqlEndpoint": "https://cik66w7wobbp3kc3e74mj32jni.appsync-api.eu-north-1.amazonaws.com/graphql",
+    "aws_appsync_region": "eu-north-1",
+    "aws_appsync_authenticationType": "API_KEY",
+    "aws_appsync_apiKey": "da2-765w3decbbhqxjetmu6zhrfmyi"
 };
 
 

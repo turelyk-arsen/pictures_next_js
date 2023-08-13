@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
 import { StorageManager } from "@aws-amplify/ui-react-storage";
-import { Amplify } from "aws-amplify";
+import { Amplify, DataStore } from "aws-amplify";
 import awsconfig from "@/aws-exports";
-import { withAuthenticator } from "@aws-amplify/ui-react";
+import { Button, Flex, TextField, withAuthenticator } from "@aws-amplify/ui-react";
+import { useRouter } from "next/navigation";
+import { POST } from "@/models";
 
 Amplify.configure({
   ...awsconfig,
@@ -11,13 +13,46 @@ Amplify.configure({
 });
 
 const Create = () => {
+    const [title, setTitle] = React.useState('')
+    const [body, setBody] = React.useState('')
+    const [files, setFiles] = React.useState('')
+
+    const router = useRouter()
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        DataStore.save(
+            new POST ({
+                title,
+                body,
+                images: Object.keys(files)
+            })
+        ).then(() => {
+            router.push('/')
+        })
+        
+    }
   return (
     <div>
+        <Flex as='form' direction='column' onSubmit={handleSubmit}>
+        <TextField label='Title' value={title} onChange={e => {setTitle(e.target.value)}}/>
+        <TextField label='Description' value={body} onChange={e => {setBody(e.target.value)}}/>
+        
       <StorageManager
         accessLevel="public"
         acceptedFileType={["image/*"]}
         maxFileCount={5}
+        onUploadSuccess={({ key = ''}) => {
+            setFiles((prevFiles) => {
+                return {
+                    ...prevFiles,
+                    [key]: true
+                }
+            })
+        }}
       />
+      <Button type='submit'>Submit</Button>
+      </Flex>
     </div>
   );
 };
