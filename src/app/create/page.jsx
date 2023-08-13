@@ -2,7 +2,7 @@
 import React from "react";
 import { StorageManager } from "@aws-amplify/ui-react-storage";
 import { Amplify } from "aws-amplify";
-import awsconfig from "../../aws-exports";
+import awsconfig from "@/aws-exports";
 
 Amplify.configure({
   ...awsconfig,
