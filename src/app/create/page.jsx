@@ -3,6 +3,7 @@ import React from "react";
 import { StorageManager } from "@aws-amplify/ui-react-storage";
 import { Amplify } from "aws-amplify";
 import awsconfig from "@/aws-exports";
+import { withAuthenticator } from "@aws-amplify/ui-react";
 
 Amplify.configure({
   ...awsconfig,
@@ -21,4 +22,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default withAuthenticator(Create);

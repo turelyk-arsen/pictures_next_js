@@ -1,6 +1,8 @@
 'use client'
 import Link from "next/link"
 import styles from './page.module.css'
+import { useRouter } from "next/navigation"
+import { Button, Text, useAuthenticator } from "@aws-amplify/ui-react"
 
 const links = [
     {
@@ -26,6 +28,8 @@ const links = [
 ]
 
 const Navbar = () => {
+    const router = useRouter();
+    const {user, signOut} = useAuthenticator();
   return (
     <nav className={styles.container}>
         <Link className={styles.logo} href='/'>Home page</Link>
@@ -33,7 +37,15 @@ const Navbar = () => {
             {links.map((link)=> (
                 <Link key={link.id} href={link.url}>{link.title}</Link>
             ))}
-            <button className={styles.logout} onClick={() => {console.log('Logout')}}>Logout</button>
+            {user ? (
+                <>
+                <Text>{user.username}</Text>
+                {/* <button className={styles.logout} onClick={() => {console.log('Logout')}}>Logout</button> */}
+                <Button onClick={() => {
+                     signOut();
+                    router.push('/')}}>Sign OUT</Button>
+                </> 
+            ): null}
         </div>
     </nav>
   )
