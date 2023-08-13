@@ -18,6 +18,11 @@ const links = [
         title: 'Dashboard',
         url: '/dashboard'
     },
+    {
+        id: 4,
+        title: 'Create',
+        url: '/create'
+    }
 ]
 
 const Navbar = () => {
