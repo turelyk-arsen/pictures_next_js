@@ -6,180 +6,12 @@
 
 /* eslint-disable */
 import * as React from "react";
-import {
-  Badge,
-  Button,
-  Divider,
-  Flex,
-  Grid,
-  Icon,
-  ScrollView,
-  Text,
-  TextField,
-  useTheme,
-} from "@aws-amplify/ui-react";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
+import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import { StorageManager } from "@aws-amplify/ui-react-storage";
+import { Field, getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { POST } from "../models";
-import { fetchByPath, validateField } from "./utils";
+import { fetchByPath, processFile, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
-function ArrayField({
-  items = [],
-  onChange,
-  label,
-  inputFieldRef,
-  children,
-  hasError,
-  setFieldValue,
-  currentFieldValue,
-  defaultFieldValue,
-  lengthLimit,
-  getBadgeText,
-  errorMessage,
-}) {
-  const labelElement = <Text>{label}</Text>;
-  const {
-    tokens: {
-      components: {
-        fieldmessages: { error: errorStyles },
-      },
-    },
-  } = useTheme();
-  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
-  const [isEditing, setIsEditing] = React.useState();
-  React.useEffect(() => {
-    if (isEditing) {
-      inputFieldRef?.current?.focus();
-    }
-  }, [isEditing]);
-  const removeItem = async (removeIndex) => {
-    const newItems = items.filter((value, index) => index !== removeIndex);
-    await onChange(newItems);
-    setSelectedBadgeIndex(undefined);
-  };
-  const addItem = async () => {
-    if (
-      currentFieldValue !== undefined &&
-      currentFieldValue !== null &&
-      currentFieldValue !== "" &&
-      !hasError
-    ) {
-      const newItems = [...items];
-      if (selectedBadgeIndex !== undefined) {
-        newItems[selectedBadgeIndex] = currentFieldValue;
-        setSelectedBadgeIndex(undefined);
-      } else {
-        newItems.push(currentFieldValue);
-      }
-      await onChange(newItems);
-      setIsEditing(false);
-    }
-  };
-  const arraySection = (
-    <React.Fragment>
-      {!!items?.length && (
-        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
-          {items.map((value, index) => {
-            return (
-              <Badge
-                key={index}
-                style={{
-                  cursor: "pointer",
-                  alignItems: "center",
-                  marginRight: 3,
-                  marginTop: 3,
-                  backgroundColor:
-                    index === selectedBadgeIndex ? "#B8CEF9" : "",
-                }}
-                onClick={() => {
-                  setSelectedBadgeIndex(index);
-                  setFieldValue(items[index]);
-                  setIsEditing(true);
-                }}
-              >
-                {getBadgeText ? getBadgeText(value) : value.toString()}
-                <Icon
-                  style={{
-                    cursor: "pointer",
-                    paddingLeft: 3,
-                    width: 20,
-                    height: 20,
-                  }}
-                  viewBox={{ width: 20, height: 20 }}
-                  paths={[
-                    {
-                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
-                      stroke: "black",
-                    },
-                  ]}
-                  ariaLabel="button"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    removeItem(index);
-                  }}
-                />
-              </Badge>
-            );
-          })}
-        </ScrollView>
-      )}
-      <Divider orientation="horizontal" marginTop={5} />
-    </React.Fragment>
-  );
-  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
-    return (
-      <React.Fragment>
-        {labelElement}
-        {arraySection}
-      </React.Fragment>
-    );
-  }
-  return (
-    <React.Fragment>
-      {labelElement}
-      {isEditing && children}
-      {!isEditing ? (
-        <>
-          <Button
-            onClick={() => {
-              setIsEditing(true);
-            }}
-          >
-            Add item
-          </Button>
-          {errorMessage && hasError && (
-            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
-              {errorMessage}
-            </Text>
-          )}
-        </>
-      ) : (
-        <Flex justifyContent="flex-end">
-          {(currentFieldValue || isEditing) && (
-            <Button
-              children="Cancel"
-              type="button"
-              size="small"
-              onClick={() => {
-                setFieldValue(defaultFieldValue);
-                setIsEditing(false);
-                setSelectedBadgeIndex(undefined);
-              }}
-            ></Button>
-          )}
-          <Button
-            size="small"
-            variation="link"
-            isDisabled={hasError}
-            onClick={addItem}
-          >
-            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
-          </Button>
-        </Flex>
-      )}
-      {arraySection}
-    </React.Fragment>
-  );
-}
 export default function POSTCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -204,11 +36,8 @@ export default function POSTCreateForm(props) {
     setTitle(initialValues.title);
     setBody(initialValues.body);
     setImage(initialValues.image);
-    setCurrentImageValue("");
     setErrors({});
   };
-  const [currentImageValue, setCurrentImageValue] = React.useState("");
-  const imageRef = React.createRef();
   const validations = {
     title: [],
     body: [],
@@ -340,50 +169,52 @@ export default function POSTCreateForm(props) {
         hasError={errors.body?.hasError}
         {...getOverrideProps(overrides, "body")}
       ></TextField>
-      <ArrayField
-        onChange={async (items) => {
-          let values = items;
-          if (onChange) {
-            const modelFields = {
-              title,
-              body,
-              image: values,
-            };
-            const result = onChange(modelFields);
-            values = result?.image ?? values;
-          }
-          setImage(values);
-          setCurrentImageValue("");
-        }}
-        currentFieldValue={currentImageValue}
+      <Field
+        errorMessage={errors.image?.errorMessage}
+        hasError={errors.image?.hasError}
         label={"Image"}
-        items={image}
-        hasError={errors?.image?.hasError}
-        errorMessage={errors?.image?.errorMessage}
-        setFieldValue={setCurrentImageValue}
-        inputFieldRef={imageRef}
-        defaultFieldValue={""}
+        isRequired={false}
+        isReadOnly={false}
       >
-        <TextField
-          label="Image"
-          isRequired={false}
-          isReadOnly={false}
-          value={currentImageValue}
-          onChange={(e) => {
-            let { value } = e.target;
-            if (errors.image?.hasError) {
-              runValidationTasks("image", value);
-            }
-            setCurrentImageValue(value);
+        <StorageManager
+          onUploadSuccess={({ key }) => {
+            setImage((prev) => {
+              let value = [...prev, key];
+              if (onChange) {
+                const modelFields = {
+                  title,
+                  body,
+                  image: value,
+                };
+                const result = onChange(modelFields);
+                value = result?.image ?? value;
+              }
+              return value;
+            });
           }}
-          onBlur={() => runValidationTasks("image", currentImageValue)}
-          errorMessage={errors.image?.errorMessage}
-          hasError={errors.image?.hasError}
-          ref={imageRef}
-          labelHidden={true}
+          onFileRemove={({ key }) => {
+            setImage((prev) => {
+              let value = prev.filter((f) => f !== key);
+              if (onChange) {
+                const modelFields = {
+                  title,
+                  body,
+                  image: value,
+                };
+                const result = onChange(modelFields);
+                value = result?.image ?? value;
+              }
+              return value;
+            });
+          }}
+          processFile={processFile}
+          accessLevel={"private"}
+          acceptedFileTypes={["image/*"]}
+          isResumable={false}
+          showThumbnails={true}
           {...getOverrideProps(overrides, "image")}
-        ></TextField>
-      </ArrayField>
+        ></StorageManager>
+      </Field>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

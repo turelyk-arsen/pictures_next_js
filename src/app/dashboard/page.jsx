@@ -1,8 +1,16 @@
-import React from 'react'
+'use client'
+import POSTCreateForm from '@/ui-components/POSTCreateForm'
+import { Card } from '@aws-amplify/ui-react'
+import { useRouter } from 'next/navigation'
 
 const Dashboard = () => {
+  const router = useRouter();
   return (
-    <div>Dashboard</div>
+    <Card variation="elevated" padding="x">
+      <POSTCreateForm onSuccess={() => {
+        router.push('/')
+      }} />
+    </Card>
   )
 }
 
