@@ -6,6 +6,8 @@ import awsconfig from "@/aws-exports";
 import { Button, Flex, TextField, withAuthenticator } from "@aws-amplify/ui-react";
 import { useRouter } from "next/navigation";
 import { POST } from "@/models";
+import '@aws-amplify/ui-react/styles.css'
+
 
 Amplify.configure({
   ...awsconfig,
@@ -15,17 +17,18 @@ Amplify.configure({
 const Create = () => {
     const [title, setTitle] = React.useState('')
     const [body, setBody] = React.useState('')
-    const [files, setFiles] = React.useState('')
+    const [files, setFiles] = React.useState({})
 
     const router = useRouter()
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log({title, body, files});
         DataStore.save(
             new POST ({
                 title,
                 body,
-                images: Object.keys(files)
+                image: Object.keys(files)
             })
         ).then(() => {
             router.push('/')
