@@ -2,9 +2,9 @@
 import React from "react";
 import { POST } from "@/models";
 import { DataStore, Predicates } from "aws-amplify";
-import { Grid } from "@aws-amplify/ui-react";
+import { Grid, Button } from "@aws-amplify/ui-react";
 import { StorageImage } from "@aws-amplify/ui-react-storage";
-import '@aws-amplify/ui-react/styles.css'
+import "@aws-amplify/ui-react/styles.css";
 
 const Portfolio = () => {
   // const [posts, setPosts] = React.useState<Array<POST>>([])
@@ -21,19 +21,38 @@ const Portfolio = () => {
       sub.unsubscribe();
     };
   }, []);
-  
+
   return (
     <div>
       {posts.map((post) => {
+        const handleDelete = async () => {
+          const toDelete = await DataStore.query(POST, post.id);
+          await DataStore.delete(toDelete);
+        };
         return (
           <div key={post.id}>
-            <p>{post.title}</p>
-            <p>{post.body}</p>
 
-            <Grid gap="small" templateColumns="repeat(3, 1fr)">
+
+            <Grid gap="small" templateColumns="repeat(1, 1fr)">
+                          <p>{post.title}</p>
+            <p>{post.body}</p>
               {post.image?.map((img, i) => (
-                <StorageImage alt={img} imgKey={img} key={i} accessLevel="public" />
+                <>
+                  <StorageImage
+                    alt={img}
+                    imgKey={img}
+                    key={i}
+                    accessLevel="public"
+                  />
+                </>
               ))}
+              <Button
+                variation="primary"
+                colorTheme="info"
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
             </Grid>
           </div>
         );

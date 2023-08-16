@@ -1,5 +1,6 @@
 {
   "AppSyncApiName": "picturesnextjs",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
-  "DynamoDBEnableServerSideEncryption": false
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2023-08-16T20:24:46.428Z"
 }
