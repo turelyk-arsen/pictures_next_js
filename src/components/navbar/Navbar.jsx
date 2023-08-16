@@ -22,7 +22,7 @@ const links = [
     },
     {
         id: 4,
-        title: 'Create',
+        title: 'Sign in',
         url: '/create'
     }
 ]
@@ -39,8 +39,7 @@ const Navbar = () => {
             ))}
             {user ? (
                 <>
-                <Text>{user.username}</Text>
-                {/* <button className={styles.logout} onClick={() => {console.log('Logout')}}>Logout</button> */}
+                <Text>Hello {user.attributes.name}</Text>
                 <Button onClick={() => {
                      signOut();
                     router.push('/')}}>Sign OUT</Button>

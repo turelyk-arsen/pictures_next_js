@@ -13,10 +13,14 @@
     },
     "categories": {
       "auth": {
-        "picturesnextjs556977f8": {}
+        "picturesnextjs556977f8": {},
+        "picturesnextjs": {}
       },
       "storage": {
         "s3fc0e9ee8": {}
+      },
+      "api": {
+        "picturesnextjs": {}
       }
     }
   }

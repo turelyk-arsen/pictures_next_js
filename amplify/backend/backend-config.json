@@ -23,7 +23,7 @@
     }
   },
   "auth": {
-    "picturesnextjs556977f8": {
+    "picturesnextjs": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -36,9 +36,12 @@
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
-          "EMAIL"
+          "EMAIL",
+          "NAME"
         ],
-        "socialProviders": [],
+        "socialProviders": [
+          "GOOGLE"
+        ],
         "usernameAttributes": [
           "EMAIL"
         ],

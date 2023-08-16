@@ -20,13 +20,13 @@ const Portfolio = () => {
     return () => {
       sub.unsubscribe();
     };
-  }, [setPosts]);
+  }, []);
   
   return (
     <div>
       {posts.map((post) => {
         return (
-          <>
+          <div key={post.id}>
             <p>{post.title}</p>
             <p>{post.body}</p>
 
@@ -35,7 +35,7 @@ const Portfolio = () => {
                 <StorageImage alt={img} imgKey={img} key={i} accessLevel="public" />
               ))}
             </Grid>
-          </>
+          </div>
         );
       })}
     </div>

@@ -3,17 +3,37 @@
 
 const awsmobile = {
     "aws_project_region": "eu-north-1",
-    "aws_cognito_identity_pool_id": "eu-north-1:a40f645f-4839-435d-99fb-aba2bfcfc79a",
+    "aws_appsync_graphqlEndpoint": "https://cik66w7wobbp3kc3e74mj32jni.appsync-api.eu-north-1.amazonaws.com/graphql",
+    "aws_appsync_region": "eu-north-1",
+    "aws_appsync_authenticationType": "API_KEY",
+    "aws_appsync_apiKey": "da2-765w3decbbhqxjetmu6zhrfmyi",
+    "aws_cognito_identity_pool_id": "eu-north-1:47e9415e-2ff7-4db6-9205-3b4c066f5324",
     "aws_cognito_region": "eu-north-1",
-    "aws_user_pools_id": "eu-north-1_TWl3YzPb9",
-    "aws_user_pools_web_client_id": "37buodu44u57gppbgf7kmpgf4f",
-    "oauth": {},
+    "aws_user_pools_id": "eu-north-1_PJh3A2JHE",
+    "aws_user_pools_web_client_id": "2neihl55v43spch8uuakci8ou7",
+    "oauth": {
+        "domain": "7oordyhr992k-dev.auth.eu-north-1.amazoncognito.com",
+        "scope": [
+            "phone",
+            "email",
+            "openid",
+            "profile",
+            "aws.cognito.signin.user.admin"
+        ],
+        "redirectSignIn": "http://localhost:3000",
+        "redirectSignOut": "http://localhost:3000",
+        "responseType": "code"
+    },
+    "federationTarget": "COGNITO_USER_POOLS",
     "aws_cognito_username_attributes": [
         "EMAIL"
     ],
-    "aws_cognito_social_providers": [],
+    "aws_cognito_social_providers": [
+        "GOOGLE"
+    ],
     "aws_cognito_signup_attributes": [
-        "EMAIL"
+        "EMAIL",
+        "NAME"
     ],
     "aws_cognito_mfa_configuration": "OFF",
     "aws_cognito_mfa_types": [
@@ -27,11 +47,7 @@ const awsmobile = {
         "EMAIL"
     ],
     "aws_user_files_s3_bucket": "picturesnextjsc8e44c475d2040f18e284907ea45b349143927-dev",
-    "aws_user_files_s3_bucket_region": "eu-north-1",
-    "aws_appsync_graphqlEndpoint": "https://cik66w7wobbp3kc3e74mj32jni.appsync-api.eu-north-1.amazonaws.com/graphql",
-    "aws_appsync_region": "eu-north-1",
-    "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-765w3decbbhqxjetmu6zhrfmyi"
+    "aws_user_files_s3_bucket_region": "eu-north-1"
 };
 
 
