@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "testAuthIdentityPool",
-    "allowUnauthenticatedIdentities": true,
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "pictur0b95e3bd",
     "userPoolName": "picturesnextjs",
     "autoVerifiedAttributes": [
@@ -37,7 +37,7 @@
     "usernameAttributes": [
       "email"
     ],
-    "useDefault": "defaultSocial",
+    "useDefault": "manual",
     "userPoolGroups": false,
     "userPoolGroupList": [],
     "adminQueries": false,
@@ -63,7 +63,8 @@
     },
     "breakCircularDependency": true,
     "dependsOn": [],
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000\",\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}",
-    "authProviders": []
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000\",\"https://pictures-next-js-git-aws-turelyk-arsen.vercel.app\"],\"LogoutURLs\":[\"http://localhost:3000\",\"https://pictures-next-js-git-aws-turelyk-arsen.vercel.app\"]}",
+    "authProviders": [],
+    "thirdPartyAuth": false
   }
 }

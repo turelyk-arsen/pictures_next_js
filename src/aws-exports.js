@@ -20,8 +20,8 @@ const awsmobile = {
             "profile",
             "aws.cognito.signin.user.admin"
         ],
-        "redirectSignIn": "http://localhost:3000",
-        "redirectSignOut": "http://localhost:3000",
+        "redirectSignIn": "http://localhost:3000,https://pictures-next-js-git-aws-turelyk-arsen.vercel.app",
+        "redirectSignOut": "http://localhost:3000,https://pictures-next-js-git-aws-turelyk-arsen.vercel.app",
         "responseType": "code"
     },
     "federationTarget": "COGNITO_USER_POOLS",
